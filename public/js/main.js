@@ -3,7 +3,7 @@ const aiController = 'ai';
 
 const gameChoices = ['rock', 'paper', 'scissor'];
 
-const startingPlayerControllers = [playerController, playerController]
+const startingPlayerControllers = [playerController, playerController, aiController];
 let game = null;
 
 class Player {
@@ -28,10 +28,11 @@ class Player {
 
     this.rootNode = document.createElement('section');
     this.rootNode.id = this.htmlTarget('playerBox');
+    this.rootNode.classList.add('player-box');
 
     const playerHeader = document.createElement('h2');
     playerHeader.id = this.htmlTarget('playerHeader');
-    playerHeader.textContent = `Player ${this.id}`;
+    playerHeader.textContent = `${this.controller} ${this.id}`;
     this.rootNode.appendChild(playerHeader)
 
     const gameForm = document.createElement('form');
@@ -39,6 +40,7 @@ class Player {
     gameChoices.forEach((choice) => {
       const button = document.createElement('button');
       button.id = this.htmlTarget(`${choice}Button`);
+      button.classList.add('player-button');
       button.textContent = choice;
       button.addEventListener('click', (event) => {
         event.preventDefault();
@@ -120,6 +122,7 @@ class Game {
         }
       });
 
+      // Gives points to winners
       winners.forEach((winner) => {
         winner.wins += 1;
       });
