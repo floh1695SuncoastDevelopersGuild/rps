@@ -12,7 +12,8 @@
 #playerContainer {
   display: flex;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+  flex-wrap: wrap; }
 
 .player-box {
   border: .1em solid black;
@@ -20,7 +21,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 1em; }
+  margin: 1em;
+  min-width: 200px; }
 
 .player-button {
   margin: .5em; }

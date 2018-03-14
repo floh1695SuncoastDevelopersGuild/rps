@@ -32,8 +32,18 @@ class Player {
 
     const playerHeader = document.createElement('h2');
     playerHeader.id = this.htmlTarget('playerHeader');
-    playerHeader.textContent = `${this.controller} ${this.id}`;
+    playerHeader.textContent = `${this.controller} : #${this.id}`;
     this.rootNode.appendChild(playerHeader)
+
+    const selectedHeader = document.createElement('h3');
+    selectedHeader.id = this.htmlTarget('selectedHeader');
+    selectedHeader.textContent = 'Make a selection!'
+    this.rootNode.appendChild(selectedHeader);
+
+    const winsHeader = document.createElement('h3');
+    winsHeader.id = this.htmlTarget('winsHeader');
+    winsHeader.textContent = 'Wins: 0'
+    this.rootNode.appendChild(winsHeader);
 
     const gameForm = document.createElement('form');
     gameForm.id = this.htmlTarget('gameForm');
@@ -47,6 +57,7 @@ class Player {
 
         if (!this.choice) {
           this.choice = choice;
+          this.rootNode.querySelector(this.htmlTarget('#selectedHeader')).textContent = this.choice;
           console.log('choice:', this, choice);
           game.checkForWinner();
         }
@@ -75,6 +86,8 @@ class Player {
   reset() {
     this.choice = null;
     this.points = 0;
+    this.rootNode.querySelector(this.htmlTarget('#selectedHeader')).textContent = 'Make a selection!'
+    this.rootNode.querySelector(this.htmlTarget('#winsHeader')).textContent = `Wins: ${this.wins}`;
   }
 }
 Player.NextId = 0;
@@ -136,6 +149,23 @@ class Game {
     }
   }
 
+  addPlayer(controller) {
+    this.players.push(new Player(controller));
+  } 
+
+  removePlayer(id) {
+    let index = null;
+    this.players.forEach((player) => {
+      if (id == player.id) {
+        index = this.players.indexOf(player);
+        // player.removeDom();
+      }
+    });
+    if (index != null) {
+      this.players.splice(index, 1);
+    }
+  }
+
   reset() {
     this.players.forEach((player) => {
       player.reset();
@@ -145,6 +175,14 @@ class Game {
 
 const main = () => {
   game = new Game(startingPlayerControllers);
+  document.querySelector('#addPlayer').addEventListener('click', (event) => {
+    event.preventDefault();
+    game.addPlayer(playerController);
+  });
+  document.querySelector('#addAi').addEventListener('click', (event) => {
+    event.preventDefault();
+    game.addPlayer(aiController);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', main)
